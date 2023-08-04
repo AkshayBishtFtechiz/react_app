@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../scss/navbar.scss";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import { CLIENT_CURRENT } from "../constants";
+import Grid from "@mui/system/Unstable_Grid/Grid";
+import { Button } from "@mui/base";
 
 const Navbar = ({ isAdmin }) => {
   const [menuIcon, setMenuIcon] = useState(false);
@@ -16,6 +16,30 @@ const Navbar = ({ isAdmin }) => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+
+  const activeUrl = window.location.pathname.replace('/','');
+    
+    let gps = {};
+    let licenses = {};
+    let settings = {};
+
+    switch (activeUrl) {
+        case 'home':
+            licenses = {
+              backgroundColor: '#eeaf1d'
+            };
+            break;
+        case 'gps': 
+            gps = {
+              backgroundColor: '#eeaf1d'
+            };
+            break;
+        case 'settings': 
+            settings = {
+              backgroundColor: '#eeaf1d'
+            };
+            break;
+    }
 
   const fetchClientData = async () => {
     console.log("fetchClientData isAdmin : "  + isAdmin);
@@ -49,46 +73,40 @@ const Navbar = ({ isAdmin }) => {
   }, []);
 
   return (
-    <>
-      <div className="header">
-        <div className="main-nav" style={{height:"60px"}}>
-          {/* 1st logo part  */}
-          <div className="logo" style={{marginBottom:"10px",}}>
-            <img
-              className="logo_image"
-              // style={{ width: "17rem", height: "auto" }}
-              src="images/logo2.png"
-              alt="logo"
-            />
-          </div>
-
-          {/* 2nd menu part  */}
-          <div
-            className={menuIcon ? "menu-link mobile-menu-link" : "menu-link"}
-          >
-            <ul className="" style={{marginTop:"5px"}}>
+    <div className="headerContainer">
+      <Grid container alignItems={"center"}>
+        <Grid xs={4} xl={7}>
+          <img src="images/logo2.png" className="logo_image" alt="logo" />
+        </Grid>
+        <Grid xs={8} xl={5}>
+          <Grid container spacing={3}>
+            <Grid xs={2}></Grid>
+            <Grid xs={2}>
               {isAdmin && (
-                <li>
-                  <NavLink
-                    to="/home"
-                    className="navbar-link"
-                    onClick={() => setMenuIcon(false)}
-                  >
-                    Licenses
-                  </NavLink>
-                </li>
+                <Button style={licenses}>
+                    <NavLink
+                      to="/home"
+                      className=""
+                      onClick={() => setMenuIcon(false)}
+                    >
+                      Licenses
+                    </NavLink>
+                </Button>
               )}
-              <li>
+            </Grid>
+            <Grid xs={2}>
+              <Button style={gps}>
                 <NavLink
                   to="/gps"
-                  className="navbar-link"
+                  className=""
                   onClick={() => setMenuIcon(false)}
                 >
                   GPS
                 </NavLink>
-              </li>
-              {/* Drop down  */}
-              <li>
+              </Button>
+            </Grid>
+            <Grid xs={2}>
+              <Button style={settings}>
                 <NavLink
                   to="/settings"
                   className="navbar-link"
@@ -96,12 +114,15 @@ const Navbar = ({ isAdmin }) => {
                 >
                   Settings
                 </NavLink>
-              </li>
-              <li>
-                {data?.firstName || "N/A"} {data?.lastName || "N/A"} (
-                {data?.username || "N/A"})
-              </li>
-              <li>
+              </Button>
+            </Grid>
+            <Grid xs={2}>
+              <Button className="username">
+                  {data?.firstName || "N/A"} {data?.lastName || "N/A"} ({data?.username || "N/A"})
+              </Button>
+            </Grid>
+            <Grid xs={2}>
+              <Button>
                 <NavLink
                   to="/"
                   className="navbar-link-btn"
@@ -109,21 +130,12 @@ const Navbar = ({ isAdmin }) => {
                 >
                   Logout
                 </NavLink>
-              </li>
-            </ul>
-          </div>
-          {/* 3rd social media links */}
-          <div className="social-media">
-            {/* hamburger menu start  */}
-            <div className="hamburger-menu">
-              <a href="#" onClick={() => setMenuIcon(!menuIcon)}>
-                <MenuIcon style={{ width: "4rem", height: "4rem" }} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 
