@@ -4,6 +4,7 @@ import "../scss/navbar.scss";
 import { CLIENT_CURRENT } from "../constants";
 import Grid from "@mui/system/Unstable_Grid/Grid";
 import { Button } from "@mui/base";
+<<<<<<< HEAD
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
@@ -15,6 +16,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
+=======
+>>>>>>> 425525ccfe97eab71c8fa14360ea603d03bdd232
 
 const Navbar = ({ isAdmin }) => {
   const [data, setData] = useState();
@@ -33,6 +36,7 @@ const Navbar = ({ isAdmin }) => {
   };
 
   const activeUrl = window.location.pathname.replace('/','');
+<<<<<<< HEAD
 
   let gps = {};
   let licenses = {};
@@ -71,6 +75,31 @@ const Navbar = ({ isAdmin }) => {
   };
 
 
+=======
+    
+    let gps = {};
+    let licenses = {};
+    let settings = {};
+
+    switch (activeUrl) {
+        case 'home':
+            licenses = {
+              backgroundColor: '#eeaf1d'
+            };
+            break;
+        case 'gps': 
+            gps = {
+              backgroundColor: '#eeaf1d'
+            };
+            break;
+        case 'settings': 
+            settings = {
+              backgroundColor: '#eeaf1d'
+            };
+            break;
+    }
+
+>>>>>>> 425525ccfe97eab71c8fa14360ea603d03bdd232
   const fetchClientData = async () => {
     console.log("fetchClientData isAdmin : "  + isAdmin);
     const token = localStorage.getItem("token");
@@ -105,6 +134,7 @@ const Navbar = ({ isAdmin }) => {
   return (
     <div className="headerContainer">
       <Grid container alignItems={"center"}>
+<<<<<<< HEAD
         <Grid xs={6}>
           <img src="images/logo2.png" className="logo_image" alt="logo" />
         </Grid>
@@ -113,16 +143,49 @@ const Navbar = ({ isAdmin }) => {
               {isAdmin && (
                 <Button style={licenses} className="ButtonColor">
                     <NavLink to="/home">
+=======
+        <Grid xs={4} xl={7}>
+          <img src="images/logo2.png" className="logo_image" alt="logo" />
+        </Grid>
+        <Grid xs={8} xl={5}>
+          <Grid container spacing={3}>
+            <Grid xs={2}></Grid>
+            <Grid xs={2}>
+              {isAdmin && (
+                <Button style={licenses}>
+                    <NavLink
+                      to="/home"
+                      className=""
+                      onClick={() => setMenuIcon(false)}
+                    >
+>>>>>>> 425525ccfe97eab71c8fa14360ea603d03bdd232
                       Licenses
                     </NavLink>
                 </Button>
               )}
+<<<<<<< HEAD
               <Button style={gps} className="ButtonColor">
                 <NavLink to="/gps">
                   GPS
                 </NavLink>
               </Button>
               <Button style={settings} className="ButtonColor">
+=======
+            </Grid>
+            <Grid xs={2}>
+              <Button style={gps}>
+                <NavLink
+                  to="/gps"
+                  className=""
+                  onClick={() => setMenuIcon(false)}
+                >
+                  GPS
+                </NavLink>
+              </Button>
+            </Grid>
+            <Grid xs={2}>
+              <Button style={settings}>
+>>>>>>> 425525ccfe97eab71c8fa14360ea603d03bdd232
                 <NavLink
                   to="/settings"
                   className="navbar-link"
@@ -130,6 +193,7 @@ const Navbar = ({ isAdmin }) => {
                   Settings
                 </NavLink>
               </Button>
+<<<<<<< HEAD
               <div>
               <Button 
                 style={{paddingRight: '1rem', paddingLeft: '1rem'}}
@@ -199,6 +263,26 @@ const Navbar = ({ isAdmin }) => {
                 </MenuItem>
               </Menu>
           </div>
+=======
+            </Grid>
+            <Grid xs={2}>
+              <Button className="username">
+                  {data?.firstName || "N/A"} {data?.lastName || "N/A"} ({data?.username || "N/A"})
+              </Button>
+            </Grid>
+            <Grid xs={2}>
+              <Button>
+                <NavLink
+                  to="/"
+                  className="navbar-link-btn"
+                  onClick={() => handleLogout()}
+                >
+                  Logout
+                </NavLink>
+              </Button>
+            </Grid>
+          </Grid>
+>>>>>>> 425525ccfe97eab71c8fa14360ea603d03bdd232
         </Grid>
       </Grid>
     </div>
