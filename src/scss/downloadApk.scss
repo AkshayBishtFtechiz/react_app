@@ -1,0 +1,24 @@
+.copyButton {
+    width: 90%;
+    padding: 10px 0 !important;
+    border-radius: 25px !important;
+    transition: .4s !important;
+}
+
+.copyButton:hover {
+  width: 90%;
+  padding: 10px 0 !important;
+  border-radius: 25px !important;
+  background-color: #007dc6 !important;
+  color: white;
+  border: 1px solid #007dc6 !important;
+}
+
+.copyButton:focus {
+  width: 90%;
+  padding: 10px 0 !important;
+  border-radius: 25px !important;
+  background-color: #007dc6 !important;
+  color: white;
+  border: 1px solid #007dc6 !important;
+}

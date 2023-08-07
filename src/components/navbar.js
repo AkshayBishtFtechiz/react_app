@@ -1,14 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../scss/navbar.scss";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import { CLIENT_CURRENT } from "../constants";
+import Grid from "@mui/system/Unstable_Grid/Grid";
+import { Button } from "@mui/base";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
+//icons
+import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import MenuIcon from '@mui/icons-material/Menu';
+import SettingsIcon from '@mui/icons-material/Settings';
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
+import FilePresentIcon from '@mui/icons-material/FilePresent';
 
 const Navbar = ({ isAdmin }) => {
-  const [menuIcon, setMenuIcon] = useState(false);
   const [data, setData] = useState();
   const [error, setError] = useState();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const open2 = Boolean(anchorEl2);
+  const iconColor = {color: "#007dc6", paddingRight: '10px'};
 
   const navigate = useNavigate();
   
@@ -16,6 +31,45 @@ const Navbar = ({ isAdmin }) => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+
+  const activeUrl = window.location.pathname.replace('/','');
+
+  let gps = {};
+  let licenses = {};
+  let settings = {};
+
+  switch (activeUrl) {
+    case 'home':
+        licenses = {
+          backgroundColor: '#eeaf1d'
+        };
+        break;
+    case 'gps': 
+        gps = {
+          backgroundColor: '#eeaf1d'
+        };
+        break;
+    case 'settings': 
+        settings = {
+          backgroundColor: '#eeaf1d'
+        };
+        break;
+    }
+
+  const handleLogoutMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleLogoutClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMobileMenu = (event) => {
+    setAnchorEl2(event.currentTarget);
+  };
+  const handleMobileClose = () => {
+    setAnchorEl2(null);
+  };
+
 
   const fetchClientData = async () => {
     console.log("fetchClientData isAdmin : "  + isAdmin);
@@ -49,81 +103,105 @@ const Navbar = ({ isAdmin }) => {
   }, []);
 
   return (
-    <>
-      <div className="header">
-        <div className="main-nav" style={{height:"60px"}}>
-          {/* 1st logo part  */}
-          <div className="logo" style={{marginBottom:"10px",}}>
-            <img
-              className="logo_image"
-              // style={{ width: "17rem", height: "auto" }}
-              src="images/logo2.png"
-              alt="logo"
-            />
-          </div>
-
-          {/* 2nd menu part  */}
-          <div
-            className={menuIcon ? "menu-link mobile-menu-link" : "menu-link"}
-          >
-            <ul className="" style={{marginTop:"5px"}}>
+    <div className="headerContainer">
+      <Grid container alignItems={"center"}>
+        <Grid xs={6}>
+          <img src="images/logo2.png" className="logo_image" alt="logo" />
+        </Grid>
+        <Grid xs={6}>
+          <div className="menuContainer">
               {isAdmin && (
-                <li>
-                  <NavLink
-                    to="/home"
-                    className="navbar-link"
-                    onClick={() => setMenuIcon(false)}
-                  >
-                    Licenses
-                  </NavLink>
-                </li>
+                <Button style={licenses} className="ButtonColor">
+                    <NavLink to="/home">
+                      Licenses
+                    </NavLink>
+                </Button>
               )}
-              <li>
-                <NavLink
-                  to="/gps"
-                  className="navbar-link"
-                  onClick={() => setMenuIcon(false)}
-                >
+              <Button style={gps} className="ButtonColor">
+                <NavLink to="/gps">
                   GPS
                 </NavLink>
-              </li>
-              {/* Drop down  */}
-              <li>
+              </Button>
+              <Button style={settings} className="ButtonColor">
                 <NavLink
                   to="/settings"
                   className="navbar-link"
-                  onClick={() => setMenuIcon(false)}
                 >
                   Settings
                 </NavLink>
-              </li>
-              <li>
-                {data?.firstName || "N/A"} {data?.lastName || "N/A"} (
-                {data?.username || "N/A"})
-              </li>
-              <li>
-                <NavLink
-                  to="/"
-                  className="navbar-link-btn"
-                  onClick={() => handleLogout()}
-                >
+              </Button>
+              <div>
+              <Button 
+                style={{paddingRight: '1rem', paddingLeft: '1rem'}}
+                className="profileIcon"
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleLogoutMenu}
+              >
+                <ManageAccountsRoundedIcon />
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleLogoutClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }} 
+              >
+                <MenuItem>
+                  <PersonOutlinedIcon  style={iconColor}/>
+                  {data?.firstName || "N/A"} {data?.lastName || "N/A"} ({data?.username || "N/A"})
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <LogoutOutlinedIcon style={iconColor}/>
                   Logout
-                </NavLink>
-              </li>
-            </ul>
+                </MenuItem>
+              </Menu>
+              </div>
           </div>
-          {/* 3rd social media links */}
-          <div className="social-media">
-            {/* hamburger menu start  */}
-            <div className="hamburger-menu">
-              <a href="#" onClick={() => setMenuIcon(!menuIcon)}>
-                <MenuIcon style={{ width: "4rem", height: "4rem" }} />
-              </a>
-            </div>
+          <div className="menuContainerInMobileView">
+              <Button 
+               onClick={handleMobileMenu}
+              >
+                <MenuIcon />
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl2}
+                open={open2}
+                onClose={handleMobileClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+              >
+                <MenuItem  onClick={() => navigate("/home")}>
+                  <FilePresentIcon style={iconColor}/>
+                  Licenses
+                </MenuItem>
+                <MenuItem onClick={() => navigate("/gps")}>
+                  <GpsFixedIcon style={iconColor}/>
+                  Gps
+                </MenuItem>
+                <MenuItem onClick={() => navigate("/Settings")}>
+                  <SettingsIcon style={iconColor}/>
+                  Settings
+                </MenuItem>
+                <MenuItem>
+                  <PersonOutlinedIcon style={iconColor} />
+                  {data?.firstName || "N/A"} {data?.lastName || "N/A"} ({data?.username || "N/A"})
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <LogoutOutlinedIcon style={iconColor}/>
+                  Logout
+                </MenuItem>
+              </Menu>
           </div>
-        </div>
-      </div>
-    </>
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 

@@ -16,7 +16,7 @@ const GPS = () => {
   return (
     <>
       <ToastContainer style={{ zIndex: 3 }} />
-      <div className="gps_page" style={{paddingTop:"58px"}}>
+      <div className="gps_page" style={{paddingTop:"0"}}>
         <div className="gps_map">
             <WrappedMap
               showToast={showToast}
