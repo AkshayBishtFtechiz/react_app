@@ -105,18 +105,14 @@ function ContactForm({ dialogType, emulatorId, showToast }) {
     console.log("filesString11", file, message, phoneNumber);
     console.log("filesString", message, phoneNumber);
 
-    // const formData = new FormData();
-    // formData.append("files", file);
-    // formData.append("phoneNumber", phoneNumber);
-    // formData.append("message", message);
+    const formData = new FormData();
+    formData.append("emulatorId", emulatorId);
+    formData.append("number", phoneNumber);
+    formData.append("message", message);
+    formData.append("file", file);
 
     if (validatePhoneNumber(phoneNumber) && validateMessage(message)) {
-      const payload = {
-        emulatorId: emulatorId,
-        message: message,
-        number: phoneNumber,
-        file: file,
-      };
+    
       const token = localStorage.getItem("token");
 
       // if (fileName) {
@@ -126,10 +122,11 @@ function ContactForm({ dialogType, emulatorId, showToast }) {
       const { success, data, error } = await ApiService.makeApiCall(
         dialogType === "messages" ? MESSAGE_SEND_MSG : CALL_MAKE_CALL,
         "POST",
-        payload,
+        formData,
         token,
         null
       );
+
       if (success) {
         setPhoneNumber("");
         setMessage("");
@@ -149,7 +146,7 @@ function ContactForm({ dialogType, emulatorId, showToast }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} encType="multipart/form-data">
       <TextField
         label="Phone Number"
         variant="outlined"
@@ -394,7 +391,7 @@ function ShowHistory({ dialogType, data }) {
                       gap={1}
                     >
                       <Typography fontWeight={800}>From:</Typography>
-                      <Typography fontWeight={400}>{msgData.from}</Typography>
+                      <Typography fontWeight={400}>{msgData.from.endpoint}</Typography>
                     </Grid>
                     <Grid
                       item
