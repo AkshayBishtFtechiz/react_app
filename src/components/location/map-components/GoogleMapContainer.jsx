@@ -50,7 +50,13 @@ const GoogleMapContainer = ({
 
   return (
     <div className="gMapCont">
-      <GoogleMap ref={mapRef} defaultZoom={7} center={center}>
+      <GoogleMap      
+        ref={mapRef}
+        defaultZoom={7}
+        center={center}
+        gestureHandling="none"
+        zoomControl={false}
+        options={{ scrollwheel: true }} >
         {pathTraveled != null && (
           <Polyline
             path={pathTraveled}
