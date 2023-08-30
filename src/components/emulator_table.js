@@ -306,6 +306,7 @@ const EmulatorTable = ({
                   style={{
                     backgroundColor: row.user === null ? "green" : "red",
                     // width: row.user === null ? "95px" : "",
+                    padding:".3rem 0",
                     width: "7.5rem",
                   }}
                   onClick={() => handleActionButtonClick(row)}
